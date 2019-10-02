@@ -62,23 +62,58 @@ $(document).on("click", ".showButtons", function (event) {
         method: "GET"
     }).then(function (response) {
 
-        for (var i=0; i < tvShows.length; i++) {
+        for (var i=0; i < 10; i++) {
 
         let results = response.data;
         let rating = results[i].rating;
-        let image = results[i].images.fixed_height.url
+        let imageMoving = results[i].images.fixed_height.url
+        let imageStill = results[i].images.fixed_height_still.url
+        console.log(response)
 
         $("#gifContainer").prepend(`
         <div>
         <p>Rating: ${rating}</p>
-        <img src="${image}" class="border solid 4px light"></img>
+        <img src="${imageMoving}" class="border solid 4px light gif" data-status="moving"></img>
         </div>
         `)
-    }
-    
+
+        //Function to stop gif from playing on click
+        $(".gif").on("click", function (event) {
+   
+        event.preventDefault();
+        const gifStatus = $(".gif").attr("data-status") 
+
+        if(gifStatus === "moving") {
+        $(this).attr("data-status", "still")
+        $(this).attr("src", imageMoving)
+        
+        } else if (gifStatus === "still") {
+        $(this).attr("data-status", "moving")
+        $(this).attr("src", imageStill)
+        }
     })
+    
+    }
 
 })
+
+})
+
+// //Function to stop gif from playing on click
+// $(document).on("click", ".gif", function (event) {
+   
+//     event.preventDefault();
+//     const gifStatus = $(".gif").attr("data-status") 
+
+//     if(gifStatus === "moving") {
+//         $(this).attr("data-status", "still")
+//         $(this).attr("src", imageStill)
+        
+//     } else if (gifStatus === "still") {
+//         $(this).attr("data-status", "moving")
+//         $(this).attr("src", imageMoving)
+//     }
+// })
 
 
 
