@@ -1,0 +1,14 @@
+#gifButtons {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap
+};
+
+#heading {
+   font-family: Georgia, 'Times New Roman', Times, serif;
+    color: whitesmoke;
+    font-weight: bold
+};
+
+
+
