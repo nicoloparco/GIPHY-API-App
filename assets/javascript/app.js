@@ -80,25 +80,21 @@ $(document).on("click", ".showButtons", function (event) {
         //Function to stop gif from playing on click
         $(".gif").on("click", function (event) {
    
-        event.preventDefault();
-        const gifState = $(".gif").attr("data-state") 
-        const src = $(this).attr("src")
-
-        if(gifState === "moving") {
-        $(this).attr("src", src.replace(/\.gif/i, "_s.gif"))
-        $(this).attr("data-state", "still")
-        }
-         else {
+        	var src = $(this).attr("src");
+      if($(this).hasClass('playing')){
+         //stop
+         $(this).attr('src', src.replace(/\.gif/i, "_s.gif"))
+         $(this).removeClass('playing');
+      } else {
+        //play
+        $(this).addClass('playing');
         $(this).attr('src', src.replace(/\_s.gif/i, ".gif"))
-        $(this).attr("data-state", "moving")
-        }
+      }
     })
     
     }
 })
 })
-
-
 
 
 
