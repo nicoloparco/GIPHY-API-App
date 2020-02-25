@@ -63,7 +63,7 @@ $(document).on("click", ".showButtons", function (event) {
     }).then(function (response) {
 
         for (var i=0; i < 10; i++) {
-
+    
         let results = response.data;
         let rating = results[i].rating;
         let imageMoving = results[i].images.fixed_height.url
@@ -73,7 +73,7 @@ $(document).on("click", ".showButtons", function (event) {
         $("#gifContainer").prepend(`
         <div>
         <p>Rating: ${rating}</p>
-        <img src="${imageMoving}" class="border solid 4px light gif" data-status="moving"></img>
+        <img src="${imageMoving}" class="border solid 4px light gif rounded" data-status="moving"></img>
         </div>
         `)
 
@@ -81,39 +81,24 @@ $(document).on("click", ".showButtons", function (event) {
         $(".gif").on("click", function (event) {
    
         event.preventDefault();
-        const gifStatus = $(".gif").attr("data-status") 
+        const gifState = $(".gif").attr("data-state") 
+        const src = $(this).attr("src")
 
-        if(gifStatus === "moving") {
-        $(this).attr("data-status", "still")
-        $(this).attr("src", imageMoving)
-        
-        } else if (gifStatus === "still") {
-        $(this).attr("data-status", "moving")
-        $(this).attr("src", imageStill)
+        if(gifState === "moving") {
+        $(this).attr("src", src.replace(/\.gif/i, "_s.gif"))
+        $(this).attr("data-state", "still")
+        }
+         else {
+        $(this).attr('src', src.replace(/\_s.gif/i, ".gif"))
+        $(this).attr("data-state", "moving")
         }
     })
     
     }
-
+})
 })
 
-})
 
-// //Function to stop gif from playing on click
-// $(document).on("click", ".gif", function (event) {
-   
-//     event.preventDefault();
-//     const gifStatus = $(".gif").attr("data-status") 
-
-//     if(gifStatus === "moving") {
-//         $(this).attr("data-status", "still")
-//         $(this).attr("src", imageStill)
-        
-//     } else if (gifStatus === "still") {
-//         $(this).attr("data-status", "moving")
-//         $(this).attr("src", imageMoving)
-//     }
-// })
 
 
 
