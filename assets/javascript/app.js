@@ -3,6 +3,7 @@ let tvShows = ["Game of Thrones", "Entourage", "It's Always Sunny In Philadelphi
 const baseURL = "https://api.giphy.com/v1/gifs/search?q="
 const apiKey = "aXG0hvq0vUg7to2ZRwUTY7G3bUyPktOd"
 const limit = "&limit=10"
+let favorites = [];
 
 //Function to load values from local storage
 function loadLocalStorage() {
@@ -65,15 +66,20 @@ $(document).on("click", ".showButtons", function (event) {
         for (var i=0; i < 10; i++) {
     
         let results = response.data;
+        let id = results.id;
         let rating = results[i].rating;
+        let url = results[i].url;
         let imageMoving = results[i].images.fixed_height.url
-        let imageStill = results[i].images.fixed_height_still.url
-        console.log(response)
+        
+        const favoriteIndex = favorites.indexOf(id);
+        const isFavorite = favoriteIndex !== -1 ? "fas" : "far";
 
         $("#gifContainer").prepend(`
-        <div>
-        <p>Rating: ${rating}</p>
+        <div class="card my-3 bg-dark shadow-lg col-3" id=${id}>
         <img src="${imageMoving}" class="border solid 4px light gif rounded" data-status="moving"></img>
+        <p>Rating: ${rating}</p>
+        <a href=${url} style="text-decoration: none">Giphy.com Link</a>
+        <i class="${isFavorite} fa-heart my-3 favorite" data-favorite="${isFavorite}"></i>
         </div>
         `)
 
@@ -91,10 +97,28 @@ $(document).on("click", ".showButtons", function (event) {
         $(this).attr('src', src.replace(/\_s.gif/i, ".gif"))
       }
     })
-    
     }
 })
 })
+
+//Favorite function
+function handleFavorite() {
+    const favoriteState = $(this).attr("data-favorite")
+    const id = $(this).attr("data-id")
+
+    if(favoriteState === "far"){
+        favorites.push(id);
+        localStorage.setItem("favorites", JSON.stringify(favorites))
+        $(this).removeClass("far").addClass("fas");
+        $(this).attr("data-favorite", "fas");
+    } else {
+        favorites = favorites.filter((el) => el != id);
+        $(this).removeClass("fas").addClass("far");
+        $(this).attr("data-favorite", "far");
+    }
+}
+$(document).on("click", ".favorite", handleFavorite)
+
 
 
 
